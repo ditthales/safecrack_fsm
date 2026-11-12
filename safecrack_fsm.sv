@@ -1,93 +1,139 @@
-module safecrack_fsm (
-    input  logic       clk,
-    input  logic       rstn,
-    input  logic [2:0] btn,        // buttons inputs (BTN[2:0])
-    output logic       unlocked    // output: 1 when the safe is unlocked
+`timescale 1ns/1ps
+
+module safecrackpro_fsm (
+    input  logic        clk,
+    input  logic        rstn,
+    input  logic [2:0]  btn,                   // buttons inputs (BTN[2:0])
+    output logic [3:0][3:0] digits,            // 4 digits, 4 bits each
+    output logic [1:0]  current_position_idx,  // active digit position
+    output logic [17:0] led_red,               // red LEDs (wrong password)
+    output logic [8:0]  led_green              // green LEDs (correct password)
 );
     // one-hot encoding
     typedef enum logic [4:0] { 
-        S0      = 5'b00001,  // initial state
-        S1      = 5'b00010,  // BTN = 1 right
-        S2      = 5'b00100,  // BTN = 2 right
-        UNLOCKED_ON   = 5'b01000,  // BTN = 3 right -> unlock ON
-        UNLOCKED_OFF  = 5'b10000   // unlock OFF
-
+        START               = 5'b00001,  // initial state / reset
+        CURRENT_POSITION    = 5'b00010,  // editing digits
+        CHECK_PASSWORD      = 5'b00100,  // verify input vs correct password
+        WAIT_GREEN_LED_TIME = 5'b01000,  // show green LEDs
+        WAIT_RED_LED_TIME   = 5'b10000   // show red LEDs
     } state_t;
 
     state_t state, next_state;
     logic [2:0] btn_prev, btn_edge, btn_pos;
-    logic       any_btn_edge;
+    
+    // Time constants at 50MHz
+    localparam int TIME_5S = 250_000_000;
+    localparam int TIME_3S = 150_000_000;
+    
+    // Nomenclatura ajustada para casar com dut.fsm_inst.led_time_cnt do tb_safecrackpro_top.sv
+    logic [27:0] led_time_cnt, next_led_time_cnt; 
+    
+    logic [3:0][3:0] next_digits;
+    logic [1:0]      next_position_idx;
 
-    localparam int BLINK_DELAY = 50_000_000;    // 1 second delay at 50MHz clock
-    logic [$clog2(BLINK_DELAY)-1:0] delay_cnt, next_delay_cnt;
-     
-     always_comb begin
-        btn_pos	= ~btn; // invert buttons to active high
+    // input logic for buttons
+    always_comb begin
+        btn_pos  = ~btn; // invert buttons to active high
         btn_edge = btn_pos & ~btn_prev; // get 0 -> 1 edges
-        any_btn_edge = (|btn_edge); // any button edge detected
-     end 
+    end 
      
     // sequential logic
     always_ff @(posedge clk or negedge rstn) begin
         if (~rstn) begin
-            btn_prev    <= 3'b000;
-            delay_cnt   <= BLINK_DELAY;
-            state       <= S0;
+            btn_prev             <= 3'b000;
+            led_time_cnt         <= '0;
+            state                <= START;
+            digits               <= '0;
+            current_position_idx <= '0;
         end
         else begin
-            btn_prev    <= btn_pos;
-            delay_cnt   <= next_delay_cnt;
-            state       <= next_state;
+            btn_prev             <= btn_pos;
+            led_time_cnt         <= next_led_time_cnt;
+            state                <= next_state;
+            digits               <= next_digits;
+            current_position_idx <= next_position_idx;
         end
     end
 
     // transition logic
     always_comb begin
         // default assignments
-        next_state     = state;
-        next_delay_cnt = delay_cnt;
+        next_state        = state;
+        next_led_time_cnt = led_time_cnt;
+        next_digits       = digits;
+        next_position_idx = current_position_idx;
+        
+        led_red   = 18'h00000;
+        led_green = 9'h000;
 
         unique case (state)
-            S0: begin
-                    if (btn_edge == 3'b001) next_state = S1;	// button 0 pressed -> correct input
-                    else if (any_btn_edge) next_state = S0; 	// any other invalid input -> restart
-                    else next_state = S0;					    // no button pressed -> stay
+            START: begin
+                next_digits       = '0;
+                next_position_idx = '0;
+                next_led_time_cnt = '0;
+                next_state        = CURRENT_POSITION;
+            end
+
+            CURRENT_POSITION: begin
+                if (btn_edge == 3'b001) begin      // btn[0] / KEY[1] - Confirm position
+                    if (current_position_idx == 2'd3) begin
+                        next_state = CHECK_PASSWORD;
+                    end else begin
+                        next_position_idx = current_position_idx + 1'b1;
+                    end
                 end
-            S1: begin
-                    if (btn_edge == 3'b010) next_state = S2; 		// button 1 pressed -> correct input
-                    else if (any_btn_edge) next_state = S0; 	// any other invalid input -> restart
-                    else next_state = S1;				// no button pressed -> stay
+                else if (btn_edge == 3'b010) begin // btn[1] / KEY[2] - Increment digit
+                    if (digits[current_position_idx] == 4'd9)
+                        next_digits[current_position_idx] = 4'd0;
+                    else
+                        next_digits[current_position_idx] = digits[current_position_idx] + 1'b1;
                 end
-            S2: begin
-                    if (btn_edge == 3'b100) next_state = UNLOCKED_ON;		// button 2 pressed -> correct input
-                    else if (any_btn_edge) next_state = S0; 	// any other invalid input -> restart	
-                    else next_state = S2;				// no button pressed -> stay
-                end
-            UNLOCKED_ON: begin
-                if (delay_cnt > 0) begin
-                    next_delay_cnt = delay_cnt - 1;
-                end else begin
-                    next_state     = UNLOCKED_OFF;
-                    next_delay_cnt = BLINK_DELAY;       // reset delay counter
+                else if (btn_edge == 3'b100) begin // btn[2] / KEY[3] - Decrement digit
+                    if (digits[current_position_idx] == 4'd0)
+                        next_digits[current_position_idx] = 4'd9;
+                    else
+                        next_digits[current_position_idx] = digits[current_position_idx] - 1'b1;
                 end
             end
 
-            UNLOCKED_OFF: begin
-                if (delay_cnt > 0) begin
-                    next_delay_cnt = delay_cnt - 1;
+            CHECK_PASSWORD: begin
+                // correct password is 1-2-3-4
+                if (digits[0] == 4'd1 && digits[1] == 4'd2 && 
+                    digits[2] == 4'd3 && digits[3] == 4'd4) begin
+                    next_led_time_cnt = TIME_5S;
+                    next_state        = WAIT_GREEN_LED_TIME;
                 end else begin
-                    next_state     = UNLOCKED_ON;
-                    next_delay_cnt = BLINK_DELAY;       // reset delay counter
+                    next_led_time_cnt = TIME_3S;
+                    next_state        = WAIT_RED_LED_TIME;
+                end
+            end
+				
+				WAIT_GREEN_LED_TIME: begin
+                led_green = 9'h1FF;
+                if (led_time_cnt > 0) begin
+                    next_led_time_cnt = led_time_cnt - 1;
+                end else begin
+                    // Zera imediatamente os dígitos e a posição ao acabar o tempo
+                    next_digits       = '0;
+                    next_position_idx = '0;
+                    next_state        = CURRENT_POSITION;
                 end
             end
 
-            default: next_state = S0;
+            WAIT_RED_LED_TIME: begin
+                led_red = 18'h3FFFF;
+                if (led_time_cnt > 0) begin
+                    next_led_time_cnt = led_time_cnt - 1;
+                end else begin
+                    // Zera imediatamente os dígitos e a posição ao acabar o tempo
+                    next_digits       = '0;
+                    next_position_idx = '0;
+                    next_state        = CURRENT_POSITION;
+                end
+            end
+
+            default: next_state = START;
         endcase
-    end
-
-    // output logic
-    always_comb begin
-        unlocked = (state == UNLOCKED_ON);
     end
 
 endmodule
