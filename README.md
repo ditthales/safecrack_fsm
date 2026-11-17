@@ -56,8 +56,5 @@ stateDiagram-v2
 
 Os diagramas abaixo foram gerados no ModelSim através do arquivo `tb_safecrackpro_top.sv` e atestam o comportamento elétrico/temporal da FSM mediante estímulos de teste.
 
-> **[TODO: Inserir aqui a imagem do waveform]**
-> *Imagem 1: Waveform ilustrando o cenário de sucesso (senha inserida igual a 1-2-3-4 e transição para WAIT_GREEN_LED_TIME).*
-
-> **[TODO: Inserir aqui a imagem do waveform]**
-> *Imagem 2: Waveform ilustrando a contenção de borda do botão de incremento e wrap-around de 9 para 0.*
+> <img width="1323" height="771" alt="Screenshot 2026-11-17 180151" src="https://github.com/user-attachments/assets/af7e293c-e0ee-4d57-bacf-f3aaa9047c68" />
+> *Imagem 1: Waveform no ModelSim
