@@ -55,5 +55,5 @@ stateDiagram-v2
 
 Os diagramas abaixo foram gerados no ModelSim através do arquivo `tb_safecrackpro_top.sv` e atestam o comportamento elétrico/temporal da FSM mediante estímulos de teste.
 
-> <img width="1323" height="771" alt="Screenshot 2026-11-17 180151" src="https://github.com/user-attachments/assets/af7e293c-e0ee-4d57-bacf-f3aaa9047c68" />
+> <img width="1059" height="813" alt="Screenshot 2026-11-17 181626" src="https://github.com/user-attachments/assets/cf3c9fbb-6c72-474f-95e8-2d87ef29aa8e" />
 > *Imagem 1: Waveform no ModelSim
