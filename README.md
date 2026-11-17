@@ -7,14 +7,13 @@ Uma implementação em FPGA de um cofre digital utilizando Máquina de Estados F
 2. [Implementação dos Requisitos](#implementação-dos-requisitos)
 3. [Diagrama de Estados](#diagrama-de-estados)
 4. [Diagramas de Tempo da Simulação](#diagramas-de-tempo-da-simulação)
-5. [Bugs Conhecidos](#bugs-conhecidos)
 
 ---
 
 ## Integrantes do Grupo
-* [Lucas Alves Barbosa] - [lab10]
-* [Thales Vinícius Gomes Fraga] - [tvgf]
-* [Nome do Integrante 3] - [Matrícula/Papel]
+* Lucas Alves Barbosa - lab10
+* Thales Vinícius Gomes Fraga - tvgf
+* Nome do Integrante 3 - Matrícula/Papel
 
 ---
 
