@@ -1,5 +1,5 @@
 Flow report for fsm
-Thu Nov 12 19:41:39 2026
+Tue Nov 17 17:30:20 2026
 Quartus Prime Version 21.1.1 Build 850 06/23/2022 SJ Lite Edition
 
 
@@ -41,15 +41,15 @@ https://fpgasoftware.intel.com/eula.
 +----------------------------------------------------------------------------------+
 ; Flow Summary                                                                     ;
 +------------------------------------+---------------------------------------------+
-; Flow Status                        ; Successful - Thu Nov 12 19:41:36 2026       ;
+; Flow Status                        ; Successful - Tue Nov 17 17:30:18 2026       ;
 ; Quartus Prime Version              ; 21.1.1 Build 850 06/23/2022 SJ Lite Edition ;
 ; Revision Name                      ; fsm                                         ;
 ; Top-level Entity Name              ; safecrackpro_top                            ;
 ; Family                             ; Cyclone IV E                                ;
 ; Device                             ; EP4CE115F29C7                               ;
 ; Timing Models                      ; Final                                       ;
-; Total logic elements               ; 172 / 114,480 ( < 1 % )                     ;
-;     Total combinational functions  ; 170 / 114,480 ( < 1 % )                     ;
+; Total logic elements               ; 159 / 114,480 ( < 1 % )                     ;
+;     Total combinational functions  ; 154 / 114,480 ( < 1 % )                     ;
 ;     Dedicated logic registers      ; 54 / 114,480 ( < 1 % )                      ;
 ; Total registers                    ; 54                                          ;
 ; Total pins                         ; 67 / 529 ( 13 % )                           ;
@@ -65,7 +65,7 @@ https://fpgasoftware.intel.com/eula.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 11/12/2026 19:41:12 ;
+; Start date & time ; 11/17/2026 17:29:54 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; fsm                 ;
 +-------------------+---------------------+
@@ -76,7 +76,7 @@ https://fpgasoftware.intel.com/eula.
 +-------------------------------------+----------------------------------------+---------------+------------------+------------+
 ; Assignment Name                     ; Value                                  ; Default Value ; Entity Name      ; Section Id ;
 +-------------------------------------+----------------------------------------+---------------+------------------+------------+
-; COMPILER_SIGNATURE_ID               ; 238368719731778.179452327110504        ; --            ; --               ; --         ;
+; COMPILER_SIGNATURE_ID               ; 238368719731893.179494739404688        ; --            ; --               ; --         ;
 ; MAX_CORE_JUNCTION_TEMP              ; 85                                     ; --            ; --               ; --         ;
 ; MIN_CORE_JUNCTION_TEMP              ; 0                                      ; --            ; --               ; --         ;
 ; NOMINAL_CORE_SUPPLY_VOLTAGE         ; 1.2V                                   ; --            ; --               ; --         ;
@@ -98,8 +98,8 @@ https://fpgasoftware.intel.com/eula.
 ; Analysis & Synthesis ; 00:00:07     ; 1.0                     ; 4861 MB             ; 00:00:18                           ;
 ; Fitter               ; 00:00:14     ; 1.0                     ; 6852 MB             ; 00:00:27                           ;
 ; Assembler            ; 00:00:02     ; 1.0                     ; 4999 MB             ; 00:00:02                           ;
-; Timing Analyzer      ; 00:00:02     ; 1.2                     ; 5023 MB             ; 00:00:01                           ;
-; Total                ; 00:00:25     ; --                      ; --                  ; 00:00:48                           ;
+; Timing Analyzer      ; 00:00:01     ; 1.2                     ; 5027 MB             ; 00:00:01                           ;
+; Total                ; 00:00:24     ; --                      ; --                  ; 00:00:48                           ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
@@ -108,10 +108,10 @@ https://fpgasoftware.intel.com/eula.
 +----------------------+------------------+------------+------------+----------------+
 ; Module Name          ; Machine Hostname ; OS Name    ; OS Version ; Processor type ;
 +----------------------+------------------+------------+------------+----------------+
-; Analysis & Synthesis ; hwc11            ; Windows 10 ; 10.0       ; x86_64         ;
-; Fitter               ; hwc11            ; Windows 10 ; 10.0       ; x86_64         ;
-; Assembler            ; hwc11            ; Windows 10 ; 10.0       ; x86_64         ;
-; Timing Analyzer      ; hwc11            ; Windows 10 ; 10.0       ; x86_64         ;
+; Analysis & Synthesis ; hwc28            ; Windows 10 ; 10.0       ; x86_64         ;
+; Fitter               ; hwc28            ; Windows 10 ; 10.0       ; x86_64         ;
+; Assembler            ; hwc28            ; Windows 10 ; 10.0       ; x86_64         ;
+; Timing Analyzer      ; hwc28            ; Windows 10 ; 10.0       ; x86_64         ;
 +----------------------+------------------+------------+------------+----------------+
 
 

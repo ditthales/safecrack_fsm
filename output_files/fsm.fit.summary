@@ -1,12 +1,12 @@
-Fitter Status : Successful - Thu Nov 12 19:41:33 2026
+Fitter Status : Successful - Tue Nov 17 17:30:15 2026
 Quartus Prime Version : 21.1.1 Build 850 06/23/2022 SJ Lite Edition
 Revision Name : fsm
 Top-level Entity Name : safecrackpro_top
 Family : Cyclone IV E
 Device : EP4CE115F29C7
 Timing Models : Final
-Total logic elements : 172 / 114,480 ( < 1 % )
-    Total combinational functions : 170 / 114,480 ( < 1 % )
+Total logic elements : 159 / 114,480 ( < 1 % )
+    Total combinational functions : 154 / 114,480 ( < 1 % )
     Dedicated logic registers : 54 / 114,480 ( < 1 % )
 Total registers : 54
 Total pins : 67 / 529 ( 13 % )
