@@ -13,7 +13,7 @@ Uma implementação em FPGA de um cofre digital utilizando Máquina de Estados F
 ## Integrantes do Grupo
 * Lucas Alves Barbosa - lab10
 * Thales Vinícius Gomes Fraga - tvgf
-* Nome do Integrante 3 - Matrícula/Papel
+* Pedro Henrique de Souza Bezerra Faustino - Phsbf
 
 ---
 
